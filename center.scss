@@ -58,7 +58,7 @@
  * ---
  * Center an element
  * ---
- * @param {string} $var - centering axis
+ * @param {string} $axis - centering axis
  * @param {string} $position - relative/absolute positioning for parent
  * ---
  * @example scss - Usage
@@ -80,9 +80,9 @@
  *     transform: translate(-50%,-50%);
  *   }
  */
-@mixin center($var: null, $position: relative){
+@mixin center($axis: null, $position: relative){
   
- @if $var == 'x' {
+ @if $axis == 'x' {
    
    @include parent {
      position: $position;
@@ -91,7 +91,7 @@
    left: 50%;
    transform: translate(-50%,0);
    
- }  @else if $var == 'y' {
+ }  @else if $axis == 'y' {
    
    @include parent {
      position: $position;
@@ -100,7 +100,7 @@
    top: 50%;
    transform: translate(0,-50%);
    
- } @else if $var == 'xy' {
+ } @else if $axis == 'xy' {
    
    @include parent {
      position: $position;
