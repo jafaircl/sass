@@ -1,3 +1,36 @@
+@charset "UTF-8"; 
+/**
+ * Parent selector mixin
+ * ---
+ * Grab the immediate parent selector
+ * ---
+ * @param @content
+ * ---
+ * @example scss - Usage
+ * body {
+ *   div {
+ *     span{
+ *       position: absolute;
+ *       top: 50%; left: 50%;
+ *       transform: translate(-50%,-50%);
+ *       @include parent {
+ *         position: relative;
+ *       }
+ *     }
+ *   }
+ * }
+ * ---
+ * @example css - Output
+ * body div {
+ *     position: relative;
+ *   }
+ *   body div span {
+ *     position: absolute;
+ *     top: 50%; left: 50%;
+ *     transform: translate(-50%,-50%);
+ *   }
+ */
+
 @mixin parent {
 
   @each $selector in & {
@@ -20,12 +53,39 @@
   }
 }
 
-@mixin center($var: null){
+/**
+ * Centering mixin
+ * ---
+ * Center an element
+ * ---
+ * @param {string} $var - centering axis
+ * @param {string} $position - relative/absolute positioning for parent
+ * ---
+ * @example scss - Usage
+ * body {
+ *   div {
+ *     span{
+ *       @include center(xy);
+ *     }
+ *   }
+ * }
+ * ---
+ * @example css - Output
+ * body div {
+ *     position: relative;
+ *   }
+ *   body div span {
+ *     position: absolute;
+ *     top: 50%; left: 50%;
+ *     transform: translate(-50%,-50%);
+ *   }
+ */
+@mixin center($var: null, $position: relative){
   
  @if $var == 'x' {
    
    @include parent {
-     position: relative;
+     position: $position;
    }
    position: absolute;
    left: 50%;
@@ -34,7 +94,7 @@
  }  @else if $var == 'y' {
    
    @include parent {
-     position: relative;
+     position: $position;
    } 
    position: absolute;
    top: 50%;
@@ -43,7 +103,7 @@
  } @else if $var == 'xy' {
    
    @include parent {
-     position: relative;
+     position: $position;
    }
    position: absolute;
    top: 50%; left: 50%;
@@ -51,17 +111,5 @@
    
  } @else {
     margin: 0 auto;
-  }
-}
-
-body {
-  height: 2px;
-  
-  div {
-    height: 2px;
-    
-    span {
-      @include center(xy);
-    }
   }
 }
