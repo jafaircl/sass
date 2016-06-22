@@ -1,0 +1,79 @@
+@charset "UTF-8"; 
+/**
+ * Responsive mixin
+ * ---
+ * Use maps of breakpoints and properties to simplify css and
+ * reduce media queries.
+ * ---
+ * @param {map} $breakpoints - map of breakpoints
+ * @param {string} $selector - css selector (e.g. html, .class, #id, etc.)
+ * @param {string} $property - css property to apply to selectors
+ * @param {map} $values - map of property values
+ * ---
+ * @example scss - Usage
+ *
+ * $breakpoints: (
+ *   default: null,
+ *   s: '(min-width: 600px)',
+ *   m: '(min-width: 840px)',
+ *   l: '(min-width: 960px)'
+ * );
+ * 
+ * $font-size: (
+ *   default: 16px,
+ *   s: 18px,
+ *   m: 19px,
+ *   l: 20px
+ * );
+ * 
+ * @include responsive(
+ *   div (
+ *     font-size: $font-size
+ *   ),
+ *   '.test' (
+ *     font-size: (default: 12px, m: 13px, l: 14px)
+ *   )
+ * );
+ * ---
+ * @example css - Output
+ *
+ * div { font-size: 16px; }
+ * .test { font-size: 12px; }
+ *
+ * @media screen and (min-width: 600px) {
+ *   div { font-size: 18px; }
+ * }
+ * @media screen and (min-width: 840px) {
+ *   div { font-size: 19px; }
+ *   .test { font-size: 13px; }
+ * }
+ * @media screen and (min-width: 960px) {
+ *   div { font-size: 20px; }
+ *   .test { font-size: 14px; }
+ * }
+ */
+
+@mixin responsive($selectors...){
+ @each $breakpoint-key, $breakpoint in $breakpoints {
+   @if $breakpoint == null {
+     @each $selector, $properties in $selectors {
+       #{$selector}{ 
+         @each $property, $value in $properties { 
+           #{$property}: map-get($value, $breakpoint-key);
+         }
+       }
+     }
+   }
+   @else {
+     @media screen and #{$breakpoint} {
+       @each $selector, $properties in $selectors {
+         #{$selector}{ 
+           @each $property, $value in $properties { 
+             #{$property}: map-get($value, $breakpoint-key);
+           }
+         }
+       }
+     }
+   }
+ }
+}
