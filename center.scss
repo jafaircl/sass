@@ -1,0 +1,67 @@
+@mixin parent {
+
+  @each $selector in & {
+
+    $l: length($selector);
+
+    @if ($l == 1) {
+      @error "Used parent mixin on a top-level selector";
+    } @else {
+
+      $parent: nth($selector,1);
+      @for $i from 2 to $l {
+        $parent: append($parent,nth($selector,$i));
+      }
+
+      @at-root #{$parent} {
+        @content;
+      }
+    }
+  }
+}
+
+@mixin center($var: null){
+  
+ @if $var == 'x' {
+   
+   @include parent {
+     position: relative;
+   }
+   position: absolute;
+   left: 50%;
+   transform: translate(-50%,0);
+   
+ }  @else if $var == 'y' {
+   
+   @include parent {
+     position: relative;
+   } 
+   position: absolute;
+   top: 50%;
+   transform: translate(0,-50%);
+   
+ } @else if $var == 'xy' {
+   
+   @include parent {
+     position: relative;
+   }
+   position: absolute;
+   top: 50%; left: 50%;
+   transform: translate(-50%,-50%);
+   
+ } @else {
+    margin: 0 auto;
+  }
+}
+
+body {
+  height: 2px;
+  
+  div {
+    height: 2px;
+    
+    span {
+      @include center(xy);
+    }
+  }
+}
